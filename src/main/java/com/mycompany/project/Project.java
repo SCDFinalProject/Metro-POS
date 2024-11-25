@@ -9,13 +9,11 @@ package com.mycompany.project;
  * @author fatimabintetariq
  */
 import com.mycompany.project.AdminLogin;
-
 import java.awt.Color;
 import java.awt.FlowLayout;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
-
 
 public class Project extends JFrame {
     
@@ -52,7 +50,6 @@ public class Project extends JFrame {
         
         JOptionPane.showMessageDialog(this, "Loading complete!");
         dispose();
-        new AdminLogin();
     }
 
     public static void main(String[] args) {
