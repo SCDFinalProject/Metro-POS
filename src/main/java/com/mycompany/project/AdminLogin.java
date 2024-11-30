@@ -9,7 +9,6 @@ package com.mycompany.project;
  * @author fatimabintetariq
  */
 
-import com.mycompany.project.Project;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
@@ -20,6 +19,9 @@ public class AdminLogin extends JFrame {
     JTextField usernameTF;
     JPasswordField passwordTF;
     JButton loginButton;
+    JButton addBranchButton;
+    JButton addBranchManagerButton;
+    JButton viewReportsButton;
     
     public AdminLogin() {
         setTitle("Admin Login");
@@ -46,6 +48,18 @@ public class AdminLogin extends JFrame {
                 validateLogin();
             }
         });
+        
+        addBranchButton = new JButton("Add Branch");
+        addBranchManagerButton = new JButton("Add Branch Manager");
+        viewReportsButton = new JButton("View Reports");
+
+        add(addBranchButton);
+        add(addBranchManagerButton);
+        add(viewReportsButton);
+
+        addBranchButton.addActionListener(e -> new Branch());
+        addBranchManagerButton.addActionListener(e -> new BranchManager());
+        viewReportsButton.addActionListener(e -> new ViewReports());
         
         setVisible(true);
     }

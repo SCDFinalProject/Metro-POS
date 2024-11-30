@@ -8,18 +8,17 @@ package com.mycompany.project;
  *
  * @author fatimabintetariq
  */
-import com.mycompany.project.AdminLogin;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JProgressBar;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Project extends JFrame {
-    
+
     JProgressBar bar;
 
-    Project() {
+    public Project() {
         setTitle("Loading");
         setBounds(200, 150, 400, 200);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -27,29 +26,31 @@ public class Project extends JFrame {
         bar.setStringPainted(true);
         bar.setBackground(Color.black);
         bar.setForeground(Color.red);
-        
+
         setLayout(new FlowLayout());
         add(bar);
         setVisible(true);
-        
+
         fillProgressBar();
     }
-    
+
     private void fillProgressBar() {
         for (int i = 0; i <= 100; i++) {
             bar.setValue(i);
-            
+
             try {
                 Thread.sleep(10);
             } catch (InterruptedException ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage());
             }
         }
-        
+
         bar.setString("Done...");
-        
         JOptionPane.showMessageDialog(this, "Loading complete!");
         dispose();
+
+        // Open the role selection screen
+        new SelectRole();
     }
 
     public static void main(String[] args) {

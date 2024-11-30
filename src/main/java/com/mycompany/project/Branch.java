@@ -9,110 +9,78 @@ package com.mycompany.project;
  * @author fatimabintetariq
  */
 
-public class Branch {
-    private int branchID;
-    private String branchCode;
-    private String name;
-    private String city;
-    private boolean isActive;
-    private String address;
-    private String phone;
-    private int numOfEmployees;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.sql.*;
 
-    public Branch(String branchCode, String name, String city, boolean isActive, String address, String phone) {
-        this.branchCode = branchCode;
-        this.name = name;
-        this.city = city;
-        this.isActive = isActive;
-        this.address = address;
-        this.phone = phone;
-        this.numOfEmployees = 0; // Initialize with 0 employees when the branch is created
+public class Branch extends JFrame {
+
+    JTextField branchCodeField, nameField, cityField, addressField, phoneField;
+    JCheckBox isActiveCB;
+    JButton saveButton;
+
+    public Branch() {
+        setTitle("Add Branch");
+        setBounds(400, 200, 400, 300);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLayout(new GridLayout(7, 2, 10, 10));
+
+        add(new JLabel("Branch Code:"));
+        branchCodeField = new JTextField();
+        add(branchCodeField);
+
+        add(new JLabel("Name:"));
+        nameField = new JTextField();
+        add(nameField);
+
+        add(new JLabel("City:"));
+        cityField = new JTextField();
+        add(cityField);
+
+        add(new JLabel("Address:"));
+        addressField = new JTextField();
+        add(addressField);
+
+        add(new JLabel("Phone:"));
+        phoneField = new JTextField();
+        add(phoneField);
+
+        add(new JLabel("Active:"));
+        isActiveCB = new JCheckBox();
+        add(isActiveCB);
+
+        saveButton = new JButton("Save");
+        add(new JLabel());
+        add(saveButton);
+
+        saveButton.addActionListener(e -> saveBranch());
+        setVisible(true);
     }
 
-    public Branch(int branchId, String branchCode, String name, String city, boolean isActive, String address, String phone, int numEmployees) {
-        this.branchID = branchId;
-        this.branchCode = branchCode;
-        this.name = name;
-        this.city = city;
-        this.isActive = isActive;
-        this.address = address;
-        this.phone = phone;
-        this.numOfEmployees = numEmployees;
-    }
+    private void saveBranch() {
+        String branchCode = branchCodeField.getText();
+        String name = nameField.getText();
+        String city = cityField.getText();
+        String address = addressField.getText();
+        String phone = phoneField.getText();
+        boolean isActive = isActiveCB.isSelected();
 
-    public int getBranchId() {
-        return branchID;
-    }
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ProjectDB", "root", "12345678");
+             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Branch (branchCode, name, city, address, phone, isActive) VALUES (?, ?, ?, ?, ?, ?)")) {
 
-    public void setBranchId(int branchID) {
-        this.branchID = branchID;
-    }
+            stmt.setString(1, branchCode);
+            stmt.setString(2, name);
+            stmt.setString(3, city);
+            stmt.setString(4, address);
+            stmt.setString(5, phone);
+            stmt.setBoolean(6, isActive);
 
-    public String getBranchCode() {
-        return branchCode;
-    }
-
-    public void setBranchCode(String branchCode) {
-        this.branchCode = branchCode;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public int getNumEmployees() {
-        return numOfEmployees;
-    }
-
-    public void setNumEmployees(int numOfEmployees) {
-        this.numOfEmployees = numOfEmployees;
-    }
-
-    @Override
-    public String toString() {
-        return "Branch ID: " + branchID + "\n" +
-               "Branch Code: " + branchCode + "\n" +
-               "Name: " + name + "\n" +
-               "City: " + city + "\n" +
-               "Active: " + (isActive ? "Yes" : "No") + "\n" +
-               "Address: " + address + "\n" +
-               "Phone: " + phone + "\n" +
-               "Number of Employees: " + numOfEmployees;
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Branch added successfully!");
+            dispose();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+        }
     }
 }
