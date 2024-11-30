@@ -54,7 +54,7 @@ public class AdminLogin extends JFrame {
         add(actionPanel, BorderLayout.SOUTH);
         
         loginButton.addActionListener(e -> validateLogin());
-        addBranchButton.addActionListener(e -> new Branch());
+        addBranchButton.addActionListener(e -> new AddBranch());
         addBranchManagerButton.addActionListener(e -> new BranchManager());
         viewReportsButton.addActionListener(e -> new ViewReports());
 

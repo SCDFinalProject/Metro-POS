@@ -14,13 +14,13 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.sql.*;
 
-public class Branch extends JFrame {
+public class AddBranch extends JFrame {
 
     JTextField branchCodeField, nameField, cityField, addressField, phoneField;
     JCheckBox isActiveCB;
     JButton saveButton;
 
-    public Branch() {
+    public AddBranch() {
         setTitle("Add Branch");
         setBounds(400, 200, 400, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -54,11 +54,11 @@ public class Branch extends JFrame {
         add(new JLabel());
         add(saveButton);
 
-        saveButton.addActionListener(e -> saveBranch());
+        saveButton.addActionListener(e -> saveIntoDB());
         setVisible(true);
     }
 
-    private void saveBranch() {
+    private void saveIntoDB() {
         String branchCode = branchCodeField.getText();
         String name = nameField.getText();
         String city = cityField.getText();
