@@ -16,51 +16,48 @@ import javax.swing.*;
 
 public class AdminLogin extends JFrame {
     
-    JTextField usernameTF;
-    JPasswordField passwordTF;
-    JButton loginButton;
-    JButton addBranchButton;
-    JButton addBranchManagerButton;
-    JButton viewReportsButton;
-    
+    private JTextField usernameTF;
+    private JPasswordField passwordTF;
+    private JButton loginButton;
+    private JPanel loginPanel;
+    private JPanel actionPanel;
+
     public AdminLogin() {
         setTitle("Admin Login");
         setBounds(400, 200, 300, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(3, 2, 10, 10));
+        setLayout(new BorderLayout());
         
-        add(new JLabel("Username:"));
+        loginPanel = new JPanel(new GridLayout(3, 2, 10, 10));
+        loginPanel.add(new JLabel("Username:"));
         usernameTF = new JTextField();
-        add(usernameTF);
+        loginPanel.add(usernameTF);
         
-        add(new JLabel("Password:"));
+        loginPanel.add(new JLabel("Password:"));
         passwordTF = new JPasswordField();
-        add(passwordTF);
+        loginPanel.add(passwordTF);
         
         loginButton = new JButton("Login");
-        add(new JLabel());
-        add(loginButton);
+        loginPanel.add(new JLabel());
+        loginPanel.add(loginButton);
+        add(loginPanel, BorderLayout.CENTER);
         
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) 
-            {
-                validateLogin();
-            }
-        });
+        actionPanel = new JPanel(new GridLayout(3, 1, 10, 10));
+        JButton addBranchButton = new JButton("Add Branch");
+        JButton addBranchManagerButton = new JButton("Add Branch Manager");
+        JButton viewReportsButton = new JButton("View Reports");
+
+        actionPanel.add(addBranchButton);
+        actionPanel.add(addBranchManagerButton);
+        actionPanel.add(viewReportsButton);
+        actionPanel.setVisible(false); 
+        add(actionPanel, BorderLayout.SOUTH);
         
-        addBranchButton = new JButton("Add Branch");
-        addBranchManagerButton = new JButton("Add Branch Manager");
-        viewReportsButton = new JButton("View Reports");
-
-        add(addBranchButton);
-        add(addBranchManagerButton);
-        add(viewReportsButton);
-
+        loginButton.addActionListener(e -> validateLogin());
         addBranchButton.addActionListener(e -> new Branch());
         addBranchManagerButton.addActionListener(e -> new BranchManager());
         viewReportsButton.addActionListener(e -> new ViewReports());
-        
+
         setVisible(true);
     }
     
@@ -75,18 +72,26 @@ public class AdminLogin extends JFrame {
 
             ResultSet rs = stmt.executeQuery();
             
-            if (rs.next()) 
-            {
+            if (rs.next()) {
                 JOptionPane.showMessageDialog(this, "Login successful!");
-                dispose();
-            } 
-            else {
+                showAdminActions();
+            } else {
                 JOptionPane.showMessageDialog(this, "Incorrect username or password.");
             }
-        } 
-        catch (SQLException ex) 
-        {
+        } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Database error: " + ex.getMessage());
         }
+    }
+    
+    private void showAdminActions() {
+        loginPanel.setVisible(false);
+        actionPanel.setVisible(true);
+        setSize(300, 300);
+       // revalidate();
+       // repaint();  
+    }
+
+    public static void main(String[] args) {
+        new AdminLogin();
     }
 }
