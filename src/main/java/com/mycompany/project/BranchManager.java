@@ -147,7 +147,7 @@ class BranchManagerLogin extends JFrame {
             if (rs.next()) {
                 JOptionPane.showMessageDialog(this, "Login successful!");
                 dispose();
-                new BranchManagerProfile(email);
+                postLoginButtons(email);
             } else {
                 JOptionPane.showMessageDialog(this, "Incorrect email or password.");
             }
@@ -155,6 +155,29 @@ class BranchManagerLogin extends JFrame {
             JOptionPane.showMessageDialog(this, "Database error: " + ex.getMessage());
         }
     }
+    
+    private void postLoginButtons(String email) 
+    {
+        JFrame frame = new JFrame("Branch Manager");
+        frame.setBounds(400, 200, 400, 200);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setLayout(new GridLayout(3, 1, 10, 10));
+
+        JButton dataEntryButton = new JButton("Add Data Entry Operator");
+        JButton cashierButton = new JButton("Add Cashier");
+        JButton updateProfileButton = new JButton("Update Profile");
+
+        frame.add(dataEntryButton);
+        frame.add(cashierButton);
+        frame.add(updateProfileButton);
+
+        dataEntryButton.addActionListener(e -> new DataEntryOperator());
+        cashierButton.addActionListener(e -> new Cashier()); 
+        updateProfileButton.addActionListener(e -> new BranchManagerProfile(email));
+
+        frame.setVisible(true);
+    }
+
 }
 
 class BranchManagerProfile extends JFrame {
