@@ -13,11 +13,66 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
 
+class DataEntryOperatorLogin extends JFrame {
+
+    JTextField emailField;
+    JPasswordField passwordField;
+    JButton loginButton;
+
+    public DataEntryOperatorLogin() {
+        setTitle("Data Entry Operator Login");
+        setBounds(400, 200, 400, 200);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLayout(new GridLayout(3, 2, 10, 10));
+
+        add(new JLabel("Email:"));
+        emailField = new JTextField();
+        add(emailField);
+
+        add(new JLabel("Password:"));
+        passwordField = new JPasswordField();
+        add(passwordField);
+
+        loginButton = new JButton("Login");
+        add(new JLabel());
+        add(loginButton);
+
+        loginButton.addActionListener(e -> validateLogin());
+        setVisible(true);
+    }
+
+    private void validateLogin() {
+        String email = emailField.getText();
+        String password = new String(passwordField.getPassword());
+
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ProjectDB", "root", "12345678");
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM DataEntryOperator WHERE email = ? AND password = ?")) {
+
+            stmt.setString(1, email);
+            stmt.setString(2, password);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(this, "Login successful!");
+                dispose();
+             //   postLoginButtons(email);
+            } else {
+                JOptionPane.showMessageDialog(this, "Incorrect email or password.");
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Database error: " + ex.getMessage());
+        }
+    }
+
+}
+
 public class DataEntryOperator extends JFrame {
 
     private JTextField nameField, empNoField, emailField, branchCodeField, salaryField;
     private JPasswordField passwordField;
     private JButton saveButton;
+    private String branchCode;
 
     public DataEntryOperator() {
         setTitle("Add Data Entry Operator");
@@ -99,7 +154,7 @@ public class DataEntryOperator extends JFrame {
             JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    
     public static void main(String[] args) {
         new DataEntryOperator();
     }

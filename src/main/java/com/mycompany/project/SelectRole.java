@@ -59,8 +59,9 @@ public class SelectRole extends JFrame {
                 case "Branch Manager":
                     new BranchManagerLogin();
                     break;
-//                case "Data Entry Operator":   
-//                    break;
+                case "Data Entry Operator": 
+                    new DataEntryOperatorLogin();
+                    break;
 //                case "Cashier": 
 //                    break;
             }
