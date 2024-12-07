@@ -216,14 +216,19 @@ private void enterNewPassword(int userId) {
                 return;
             }
 
-            String message = processSale(productId, quantity, pricePerUnit);
+            double totalCost = quantity * pricePerUnit;
+            String message = processSale(productId, quantity, pricePerUnit, totalCost);
+            if (message.equals("Sale processed successfully!")) 
+            {
+                message += "\nTotal Cost: " + totalCost;
+            }
             JOptionPane.showMessageDialog(frame, message);
         });
 
         frame.setVisible(true);
     }
 
-    private String processSale(String productId, int quantity, double pricePerUnit) {
+    private String processSale(String productId, int quantity, double pricePerUnit, double totalCost) {
         String message = "";
         String url = "jdbc:mysql://localhost:3306/ProjectDB";
         String user = "root";
@@ -241,7 +246,6 @@ private void enterNewPassword(int userId) {
                         } else if (quantity > currentQuantity) {
                             message = "Not enough stock available. Available: " + currentQuantity;
                         } else {
-                            // Step 3: Deduct quantity and proceed with the sale
                             String updateQuantityQuery = "UPDATE Product SET quantity = quantity - ? WHERE productId = ?";
                             try (PreparedStatement updateStmt = conn.prepareStatement(updateQuantityQuery)) {
                                 updateStmt.setInt(1, quantity);
