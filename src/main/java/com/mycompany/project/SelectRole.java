@@ -62,8 +62,9 @@ public class SelectRole extends JFrame {
                 case "Data Entry Operator": 
                     new DataEntryOperatorLogin();
                     break;
-//                case "Cashier": 
-//                    break;
+                case "Cashier": 
+                    new CashierLogin();
+                    break;
             }
         }
     }

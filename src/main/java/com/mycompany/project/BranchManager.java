@@ -145,9 +145,10 @@ class BranchManagerLogin extends JFrame {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
+                String branchCode = rs.getString("branchCode");
                 JOptionPane.showMessageDialog(this, "Login successful!");
                 dispose();
-                postLoginButtons(email);
+                postLoginButtons(email,branchCode);
             } else {
                 JOptionPane.showMessageDialog(this, "Incorrect email or password.");
             }
@@ -156,7 +157,7 @@ class BranchManagerLogin extends JFrame {
         }
     }
     
-    private void postLoginButtons(String email) 
+    private void postLoginButtons(String email,String branchCode) 
     {
         JFrame frame = new JFrame("Branch Manager");
         frame.setBounds(400, 200, 400, 200);
@@ -171,8 +172,8 @@ class BranchManagerLogin extends JFrame {
         frame.add(cashierButton);
         frame.add(updateProfileButton);
 
-        dataEntryButton.addActionListener(e -> new DataEntryOperator());
-        cashierButton.addActionListener(e -> new Cashier()); 
+        dataEntryButton.addActionListener(e -> new DataEntryOperator(branchCode));
+        cashierButton.addActionListener(e -> new Cashier(branchCode)); 
         updateProfileButton.addActionListener(e -> new BranchManagerProfile(email));
 
         frame.setVisible(true);
