@@ -56,7 +56,7 @@ public class AdminLogin extends JFrame {
         loginButton.addActionListener(e -> validateLogin());
         addBranchButton.addActionListener(e -> new AddBranch());
         addBranchManagerButton.addActionListener(e -> new BranchManager());
-        viewReportsButton.addActionListener(e -> new ViewReports());
+     //   viewReportsButton.addActionListener(e -> new ViewReports());
 
         setVisible(true);
     }
@@ -83,15 +83,9 @@ public class AdminLogin extends JFrame {
         }
     }
     
-    private void showAdminActions() {
+    public void showAdminActions() {
         loginPanel.setVisible(false);
         actionPanel.setVisible(true);
         setSize(300, 300);
-       // revalidate();
-       // repaint();  
-    }
-
-    public static void main(String[] args) {
-        new AdminLogin();
     }
 }

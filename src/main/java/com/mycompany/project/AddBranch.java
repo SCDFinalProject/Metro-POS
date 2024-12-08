@@ -65,6 +65,7 @@ public class AddBranch extends JFrame {
         String address = addressField.getText();
         String phone = phoneField.getText();
         boolean isActive = isActiveCB.isSelected();
+        AdminLogin login = new AdminLogin();
 
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ProjectDB", "root", "12345678");
              PreparedStatement stmt = conn.prepareStatement("INSERT INTO Branch (branchCode, name, city, address, phone, isActive) VALUES (?, ?, ?, ?, ?, ?)")) {
@@ -79,6 +80,7 @@ public class AddBranch extends JFrame {
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(this, "Branch added successfully!");
             dispose();
+            login.showAdminActions();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
         }

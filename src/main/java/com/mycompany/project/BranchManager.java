@@ -14,96 +14,6 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.sql.*;
 
-public class BranchManager extends JFrame {
-
-    JButton loginButton, addManagerButton;
-
-    public BranchManager() {
-        setTitle("Branch Manager");
-        setBounds(400, 200, 400, 200);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new GridLayout(2, 1, 10, 10));
-
-        addManagerButton = new JButton("Add Branch Manager");
-        loginButton = new JButton("Branch Manager Login");
-
-        add(addManagerButton);
-        add(loginButton);
-
-        addManagerButton.addActionListener(e -> new AddBranchManager());
-        loginButton.addActionListener(e -> new BranchManagerLogin());
-
-        setVisible(true);
-    }
-}
-
-class AddBranchManager extends JFrame {
-
-    JTextField nameField, emailField, branchCodeField, salaryField;
-    JButton saveButton;
-
-    public AddBranchManager() {
-        setTitle("Add Branch Manager");
-        setBounds(400, 200, 400, 300);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new GridLayout(5, 2, 10, 10));
-
-        add(new JLabel("Manager Name:"));
-        nameField = new JTextField();
-        add(nameField);
-
-        add(new JLabel("Email:"));
-        emailField = new JTextField();
-        add(emailField);
-
-        add(new JLabel("Branch Code:"));
-        branchCodeField = new JTextField();
-        add(branchCodeField);
-
-        add(new JLabel("Salary:"));
-        salaryField = new JTextField();
-        add(salaryField);
-
-        saveButton = new JButton("Save");
-        add(new JLabel());
-        add(saveButton);
-
-        saveButton.addActionListener(e -> save());
-        setVisible(true);
-    }
-
-    private void save() {
-        String name = nameField.getText();
-        String email = emailField.getText();
-        String branchCode = branchCodeField.getText();
-        String salaryText = salaryField.getText();
-
-        double salary;
-        try {
-            salary = Double.parseDouble(salaryText);
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Invalid salary input! Please enter a valid number.");
-            return;
-        }
-
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ProjectDB", "root", "12345678");
-             PreparedStatement stmt = conn.prepareStatement(
-                 "INSERT INTO BranchManager (name, email, password, branchCode, salary) VALUES (?, ?, 'Password_123', ?, ?)")) {
-
-            stmt.setString(1, name);
-            stmt.setString(2, email);
-            stmt.setString(3, branchCode);
-            stmt.setDouble(4, salary);
-
-            stmt.executeUpdate();
-            JOptionPane.showMessageDialog(this, "Branch Manager added successfully!");
-            dispose();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
-        }
-    }
-}
-
 class BranchManagerLogin extends JFrame {
 
     JTextField emailField;
@@ -179,6 +89,91 @@ class BranchManagerLogin extends JFrame {
         frame.setVisible(true);
     }
 
+}
+
+public class BranchManager extends JFrame {
+
+    JButton loginButton, addManagerButton;
+
+    public BranchManager() {
+        setTitle("Branch Manager");
+        setBounds(400, 200, 400, 150);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLayout(new GridLayout(2, 1, 10, 10));
+
+        addManagerButton = new JButton("Add Branch Manager");
+        add(addManagerButton);
+        addManagerButton.addActionListener(e -> new AddBranchManager());
+        
+        setVisible(true);
+    }
+}
+
+class AddBranchManager extends JFrame {
+
+    JTextField nameField, emailField, branchCodeField, salaryField;
+    JButton saveButton;
+
+    public AddBranchManager() {
+        setTitle("Add Branch Manager");
+        setBounds(400, 200, 400, 300);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLayout(new GridLayout(5, 2, 10, 10));
+
+        add(new JLabel("Manager Name:"));
+        nameField = new JTextField();
+        add(nameField);
+
+        add(new JLabel("Email:"));
+        emailField = new JTextField();
+        add(emailField);
+
+        add(new JLabel("Branch Code:"));
+        branchCodeField = new JTextField();
+        add(branchCodeField);
+
+        add(new JLabel("Salary:"));
+        salaryField = new JTextField();
+        add(salaryField);
+
+        saveButton = new JButton("Save");
+        add(new JLabel());
+        add(saveButton);
+
+        saveButton.addActionListener(e -> save());
+        setVisible(true);
+    }
+
+    private void save() {
+        String name = nameField.getText();
+        String email = emailField.getText();
+        String branchCode = branchCodeField.getText();
+        String salaryText = salaryField.getText();
+
+        double salary;
+        try {
+            salary = Double.parseDouble(salaryText);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Invalid salary input! Please enter a valid number.");
+            return;
+        }
+
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ProjectDB", "root", "12345678");
+             PreparedStatement stmt = conn.prepareStatement(
+                 "INSERT INTO BranchManager (name, email, password, branchCode, salary) VALUES (?, ?, 'Password_123', ?, ?)")) {
+
+            stmt.setString(1, name);
+            stmt.setString(2, email);
+            stmt.setString(3, branchCode);
+            stmt.setDouble(4, salary);
+
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Branch Manager added successfully!");
+            dispose();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+        }
+    }
 }
 
 class BranchManagerProfile extends JFrame {

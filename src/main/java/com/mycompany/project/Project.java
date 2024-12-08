@@ -48,8 +48,6 @@ public class Project extends JFrame {
         bar.setString("Done...");
         JOptionPane.showMessageDialog(this, "Loading complete!");
         dispose();
-
-        // Open the role selection screen
         new SelectRole();
     }
 

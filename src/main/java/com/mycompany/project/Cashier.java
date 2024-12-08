@@ -35,7 +35,9 @@ class CashierLogin extends JFrame {
     JPasswordField passwordField;
     JButton loginButton;
     private int vendorId;
+    private String branchCode;
     public CashierLogin() {
+        this.branchCode = branchCode;
         setTitle("Cashier Login");
         setBounds(400, 200, 400, 200);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -70,6 +72,7 @@ class CashierLogin extends JFrame {
         ResultSet rs = stmt.executeQuery();
 
         if (rs.next()) {
+            branchCode = rs.getString("branchCode");
             boolean passwordChanged = rs.getBoolean("passwordChanged");
 
             if (passwordChanged) {
@@ -233,7 +236,7 @@ private void enterNewPassword(int userId) {
         String url = "jdbc:mysql://localhost:3306/ProjectDB";
         String user = "root";
         String password = "12345678";
-
+        
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
             String checkQuantityQuery = "SELECT quantity FROM Product WHERE productId = ?";
             try (PreparedStatement pstmt = conn.prepareStatement(checkQuantityQuery)) {
@@ -251,7 +254,16 @@ private void enterNewPassword(int userId) {
                                 updateStmt.setInt(1, quantity);
                                 updateStmt.setString(2, productId);
                                 updateStmt.executeUpdate();
-                                message = "Sale processed successfully!";
+                                String insertSaleQuery = "INSERT INTO Sale (branchCode, productId, quantity, totalCost, saleDate) VALUES (?, ?, ?, ?, NOW())";
+                                try (PreparedStatement insertStmt = conn.prepareStatement(insertSaleQuery)) 
+                                {
+                                    insertStmt.setString(1, branchCode);
+                                    insertStmt.setString(2, productId);
+                                    insertStmt.setInt(3, quantity);
+                                    insertStmt.setDouble(4, totalCost);
+                                    insertStmt.executeUpdate();
+                                    message = "Sale processed successfully!";
+                                }
                             }
                         }
                     } else {
